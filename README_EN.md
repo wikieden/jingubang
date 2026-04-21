@@ -23,6 +23,15 @@ uv sync
 source .venv/bin/activate
 ```
 
+### Enable Browser Support (Recommended)
+
+Enable playwright headless browser to handle JavaScript dynamic content and bypass anti-crawl:
+
+```bash
+uv pip install ".[browser]"
+playwright install chromium
+```
+
 ## Usage
 
 ### List all supported sites
@@ -152,11 +161,13 @@ After configuration, you can get search results with logged-in status.
 
 ## Known Issues
 
-1. **Anti-crawl**: Zhihu, Weibo, Toutiao have strict anti-crawl, cannot get results without login
-2. **Baidu HTML structure changes frequently**: Selectors need occasional updates, currently partially works
-3. **Dynamic content**: Toutiao results are loaded via JavaScript, static crawling may not work even with cookies
+1. **Anti-crawl**: Zhihu, Weibo, Toutiao have strict anti-crawl
+   - Install playwright browser support to bypass initial anti-crawl
+   - If still no results, you need to configure login Cookies
+2. **Baidu HTML structure changes frequently**: Selectors need occasional updates, partially works currently
+3. **Dynamic content**: Toutiao results are loaded via JavaScript, requires browser support to get results
 
-**Stable sites**: Bilibili, GitHub, Bing search are tested and working great for daily use.
+**Stable sites**: Bilibili, GitHub, Bing search are tested and working great for daily use. With browser support installed, Toutiao/Weibo/Zhihu also work (requires login Cookies).
 
 ## License
 

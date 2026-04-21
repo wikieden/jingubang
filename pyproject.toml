@@ -30,6 +30,11 @@ dependencies = [
   "html2text>=2024.2.26",
   "fake-useragent>=1.4",
 ]
+[project.optional-dependencies]
+browser = [
+  "playwright>=1.40",
+]
+
 
 [project.scripts]
 jingubang = "jingubang.cli:main"

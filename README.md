@@ -23,6 +23,15 @@ uv sync
 source .venv/bin/activate
 ```
 
+### 启用浏览器支持（推荐）
+
+启用 playwright 无头浏览器可以解决 JavaScript 动态加载和反爬问题，支持头条/微博/知乎动态结果：
+
+```bash
+uv pip install ".[browser]"
+playwright install chromium
+```
+
 ## 使用方法
 
 ### 列出所有支持的网站
@@ -152,11 +161,13 @@ export COOKIE_TOUTIAO_COM="xxx=abc;"
 
 ## 已知问题
 
-1. **反爬机制**：知乎、微博、头条都有严格的反爬，未登录无法获取搜索结果
+1. **反爬机制**：知乎、微博、头条都有严格的反爬
+   - 安装 playwright 浏览器支持可以绕过初始反爬
+   - 如果还是无法获取结果，需要配置登录 Cookies
 2. **百度页面结构变化快**：选择器需要偶尔更新，目前能获取部分结果
-3. **动态内容**：头条搜索结果是 JavaScript 动态加载，即使携带 Cookies 静态抓取也可能无法获取
+3. **动态内容**：头条搜索结果是 JavaScript 动态加载，必须使用浏览器支持才能获取
 
-**哪些稳定可用**：Bilibili 搜索、GitHub 搜索、必应搜索 测试通过，可以日常使用。
+**哪些稳定可用**：Bilibili 搜索、GitHub 搜索、必应搜索 测试通过，可以日常使用。安装浏览器支持后，头条/微博/知乎也能正常使用（需要登录Cookies）。
 
 ## License
 
