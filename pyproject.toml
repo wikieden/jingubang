@@ -1,0 +1,39 @@
+[project]
+name = "jingubang"
+version = "0.1.0"
+authors = [
+  { name = "wikieden (viki)", email = "wikieden@gmail.com" }
+]
+description = "金箍棒 - 中文网站聚合搜索 CLI 工具"
+readme = "README.md"
+license = { text = "MIT" }
+keywords = ["search", "cli", "chinese", "baidu", "bilibili", "zhihu"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
+  "Topic :: Utilities"
+]
+requires-python = ">=3.10"
+dependencies = [
+  "click>=8.0",
+  "requests>=2.31",
+  "beautifulsoup4>=4.12",
+  "rich>=13.0",
+  "html2text>=2024.2.26",
+  "fake-useragent>=1.4",
+]
+
+[project.scripts]
+jingubang = "jingubang.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
