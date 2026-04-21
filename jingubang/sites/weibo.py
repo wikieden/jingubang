@@ -31,6 +31,9 @@ class WeiboSearch(BaseSearchEngine):
             soup = BeautifulSoup(resp.text, "html.parser")
 
             results = []
+            if "Sina Visitor System" in resp.text or "Weibo" in resp.text and len(soup.select(".card-feed")) == 0:
+                print("微博 提示: 需要登录才能获取搜索结果，未登录返回空结果")
+                return []
             # 多个选择器适配
             items = soup.select(".card-feed, .weibo-item, .search-item")
 

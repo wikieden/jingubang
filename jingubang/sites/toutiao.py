@@ -31,6 +31,41 @@ class ToutiaoSearch(BaseSearchEngine):
             soup = BeautifulSoup(resp.text, "html.parser")
 
             results = []
+            
+            # 尝试从 SSR 数据中提取
+            page_text = resp.text
+            import json
+            import re
+            # 搜索 window.__INITIAL_STATE__ 或类似数据
+            match = re.search(r'window\.__INITIAL_STATE__\s*=\s*({.*?});', page_text)
+            if match:
+                try:
+                    data = json.loads(match.group(1))
+                    # 尝试不同的数据路径
+                    search_data = None
+                    for key in ['search', 'feed', 'list']:
+                        if key in data and isinstance(data[key], dict):
+                            if 'data' in data[key] and 'list' in data[key]['data']:
+                                search_data = data[key]['data']['list']
+                                break
+                    if search_data and isinstance(search_data, list):
+                        for item in search_data[:limit]:
+                            title = item.get('title') or item.get('abstract_title', '')
+                            url_path = item.get('url') or item.get('source_url', '')
+                            snippet = item.get('abstract') or item.get('content', '')
+                            if title and url_path:
+                                if not url_path.startswith('http'):
+                                    url_path = f"https://www.toutiao.com{url_path}"
+                                results.append(SearchResult(
+                                    title=title,
+                                    url=url_path,
+                                    snippet=self.clean_text(snippet),
+                                ))
+                        if results:
+                            return results
+                except:
+                    pass  # 回退到DOM选择器
+            
             # 尝试多种选择器
             items = soup.select(".searchResultItem, .result-item, .feed-card")
 
@@ -62,6 +97,8 @@ class ToutiaoSearch(BaseSearchEngine):
                         snippet=self.clean_text(snippet),
                     ))
 
+            if not results:
+                print("头条 提示: 搜索结果需要动态加载，未登录返回空结果")
             return results
         except Exception as e:
             print(f"头条 搜索出错: {e}")

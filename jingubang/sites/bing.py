@@ -59,7 +59,8 @@ class BingSearch(BaseSearchEngine):
             title = re.sub(r'^[\w\-.]+\.(com|cn|net|org)\s+', '', title)
             title = re.sub(r'https?://\S+', '', title)
             title = title.strip()
-            if len(title) < 5:
+            # 稍微宽松一点，防止把有效的标题过滤掉
+            if len(title) < 2:
                 continue
             # 处理相对链接
             if url.startswith("//"):

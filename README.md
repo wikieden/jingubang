@@ -137,11 +137,24 @@ class MySearch(BaseSearchEngine):
 - fake-useragent
 - html2text
 
+## 解决反爬：已登录用户配置 Cookies
+
+如果你有对应网站的登录 Cookies，可以配置环境变量让 jingubang 带上 Cookies 访问：
+
+```bash
+# 格式: COOKIE_DOMAIN=name1=value1; name2=value2;
+export COOKIE_ZHIHU_COM="xxx=abc; yyy=def;"
+export COOKIE_WEIBO_COM="xxx=abc;"
+export COOKIE_TOUTIAO_COM="xxx=abc;"
+```
+
+配置后，已登录状态就能获取搜索结果了。
+
 ## 已知问题
 
 1. **反爬机制**：知乎、微博、头条都有严格的反爬，未登录无法获取搜索结果
 2. **百度页面结构变化快**：选择器需要偶尔更新，目前能获取部分结果
-3. **动态内容**：头条搜索结果是 JavaScript 动态加载，静态抓取无法获取
+3. **动态内容**：头条搜索结果是 JavaScript 动态加载，即使携带 Cookies 静态抓取也可能无法获取
 
 **哪些稳定可用**：Bilibili 搜索、GitHub 搜索、必应搜索 测试通过，可以日常使用。
 

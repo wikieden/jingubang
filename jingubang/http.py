@@ -10,6 +10,20 @@ class HttpClient:
         self.timeout = timeout
         self.session = requests.Session()
         self.ua = UserAgent()
+        # 从环境变量加载 Cookies，如果有的话
+        self._load_cookies_from_env()
+
+    def _load_cookies_from_env(self):
+        """从环境变量加载域名对应的 Cookies"""
+        import os
+        for key, value in os.environ.items():
+            if key.startswith('COOKIE_'):
+                domain = key[7:].lower()
+                # value 格式: name1=value1; name2=value2
+                for cookie_part in value.split(';'):
+                    if '=' in cookie_part:
+                        name, val = cookie_part.strip().split('=', 1)
+                        self.session.cookies.set(name, val, domain=f'.{domain}')
 
     def get_random_user_agent(self) -> str:
         """获取随机 User-Agent"""
